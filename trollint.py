@@ -69,7 +69,9 @@ if __name__ == '__main__':
         if 'filename' in pass_class.needs:
             p.filename = filename
 
-        diags += sorted(p.get_diagnostics(), key=lambda d: d.line_number)
+        diags += p.get_diagnostics()
+
+    diags = sorted(diags, key=lambda d: d.line_number)
 
     if diags:
         print('\n'.join('    '+str(d) for d in diags))

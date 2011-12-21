@@ -9,6 +9,7 @@ class LineRegexPassBase(PassBase):
     needs = ['config', 'text', 'filename']
 
     def __init__(self):
+        super(LineRegexPassBase, self).__init__()
         self.name = "VeryLongLines"
 
     def get_diagnostics(self):
