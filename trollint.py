@@ -3,7 +3,7 @@
 
 import os
 import sys
-# import clang.cindex as cindex
+import clang.cindex as cindex
 import config
 import passes.base.pass_base
 
@@ -46,8 +46,8 @@ if __name__ == '__main__':
         print('Could not open file {}'.format(filename))
         sys.exit(-1)
 
-    # index = cindex.Index.create()
-    # tu = index.parse(filename, clang_args)
+    index = cindex.Index.create()
+    tu = index.parse(filename, clang_args)
 
     pass_classes = discover_pass_classes()
 
@@ -60,8 +60,8 @@ if __name__ == '__main__':
         if 'config' in pass_class.needs:
             p.config = config.Config()
 
-        # if 'cursor' in pass_class.needs:
-        #     p.cursor = tu.cursor
+        if 'cursor' in pass_class.needs:
+            p.cursor = tu.cursor
 
         if 'text' in pass_class.needs:
             p.text = blob
@@ -72,6 +72,7 @@ if __name__ == '__main__':
         diags += p.get_diagnostics()
 
     diags = sorted(diags, key=lambda d: d.line_number)
+    diags = sorted(diags, key=lambda d: d.filename)
 
     if diags:
         print('\n'.join('    '+str(d) for d in diags))
