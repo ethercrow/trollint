@@ -2,8 +2,7 @@
 
 class LintDiagnostic(object):
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.line_number = 0
         self.message = ''
         self.filename = ''

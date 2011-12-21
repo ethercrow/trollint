@@ -18,8 +18,8 @@ class LongLines(PassBase):
         lines = enumerate(self.text.split('\n'))
         for i, l in lines:
             if len(l) > self.config.max_line_length(default=110):
-                d = LintDiagnostic(None)
-                d.line_number = i
+                d = LintDiagnostic()
+                d.line_number = i+1
                 d.message = 'Line too long'
                 d.filename = self.filename
                 result.append(d)

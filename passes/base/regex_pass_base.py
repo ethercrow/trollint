@@ -10,7 +10,6 @@ class LineRegexPassBase(PassBase):
 
     def __init__(self):
         super(LineRegexPassBase, self).__init__()
-        self.name = "VeryLongLines"
 
     def get_diagnostics(self):
         result = []
@@ -20,7 +19,7 @@ class LineRegexPassBase(PassBase):
 
         for i, l in lines:
             if regex.search(l):
-                d = LintDiagnostic(None)
+                d = LintDiagnostic()
                 d.line_number = i
                 d.message = self.message
                 d.filename = self.filename
