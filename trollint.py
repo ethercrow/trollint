@@ -47,6 +47,7 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
 
         p = pass_class()
 
+
         if not p.enabled:
             continue
 
