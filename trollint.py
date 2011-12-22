@@ -29,29 +29,19 @@ def discover_pass_classes():
     return sum([extract(m) for m in modules], [])
 
 
-if __name__ == '__main__':
+def collect_lint_diagnostics(filename, pass_classes, clang_args):
 
-    filename = sys.argv[1]
-
-    try:
-        with open('.clang_complete') as fi:
-            clang_args = [l.rstrip() for l in fi.readlines()]
-    except IOError:
-        clang_args = []
+    diags = []
 
     try:
         with open(filename) as fi:
             blob = fi.read()
     except IOError:
         print('Could not open file {}'.format(filename))
-        sys.exit(-1)
+        return []
 
     index = cindex.Index.create()
     tu = index.parse(filename, clang_args)
-
-    pass_classes = discover_pass_classes()
-
-    diags = []
 
     for pass_class in pass_classes:
 
@@ -74,8 +64,36 @@ if __name__ == '__main__':
 
         diags += p.get_diagnostics()
 
+    return diags
+
+
+if __name__ == '__main__':
+
+    filenames = sys.argv[1:]
+
+    pass_classes = discover_pass_classes()
+    try:
+        with open('.clang_complete') as fi:
+            clang_args = [l.rstrip() for l in fi.readlines()]
+    except IOError:
+        clang_args = []
+
+    diags = []
+    for filename in filenames:
+        diags += collect_lint_diagnostics(filename, pass_classes, clang_args)
     diags = sorted(diags, key=lambda d: d.line_number)
     diags = sorted(diags, key=lambda d: d.filename)
+
+    def poor_man_unique(xs):
+        if not xs:
+            return []
+        result = xs[0:1]
+        for x in xs:
+            if x != result[-1]:
+                result.append(x)
+        return result
+
+    diags = poor_man_unique(diags)
 
     if diags:
         print('\n'.join('    '+str(d) for d in diags))
