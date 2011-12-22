@@ -11,6 +11,8 @@ class ObjCNaming(PassBase):
     needs = ['text', 'filename', 'cursor']
 
     def __init__(self):
+
+        super(ObjCNaming, self).__init__()
         self.name = "ObjCNaming"
 
     def get_diagnostics(self):

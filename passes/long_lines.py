@@ -12,6 +12,7 @@ class LongLines(PassBase):
 
     def __init__(self):
         self.name = "VeryLongLines"
+        self.enabled = False
 
     def get_diagnostics(self):
         result = []

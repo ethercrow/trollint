@@ -57,6 +57,9 @@ if __name__ == '__main__':
 
         p = pass_class()
 
+        if not p.enabled:
+            continue
+
         if 'config' in pass_class.needs:
             p.config = config.Config()
 
