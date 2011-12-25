@@ -4,6 +4,7 @@ import re
 from pass_base import PassBase
 from diagnostic import LintDiagnostic
 
+
 class LineRegexPassBase(PassBase):
 
     needs = ['config', 'text', 'filename']

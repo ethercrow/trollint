@@ -1,9 +1,9 @@
 
 import re
-import clang.cindex as cindex
 
 from pass_base import PassBase
 from diagnostic import LintDiagnostic
+
 
 class TokenRegexPassBase(PassBase):
 

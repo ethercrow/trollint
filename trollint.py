@@ -7,12 +7,13 @@ import clang.cindex as cindex
 import config
 import passes.base.pass_base
 
+
 def discover_pass_classes():
     import imp
     passes_dir = os.path.join(os.path.dirname(sys.argv[0]), 'passes')
     module_names = [f for f in os.listdir(passes_dir)
                          if f.endswith('.py') and f != '__init__.py']
-    modules =  [imp.load_source('passes.' + m.replace('.py', ''),
+    modules = [imp.load_source('passes.' + m.replace('.py', ''),
                             os.path.join(passes_dir, m)) for m in module_names]
 
     def extract(m):
@@ -22,7 +23,7 @@ def discover_pass_classes():
                 continue
             maybe_class = getattr(m, maybe_class_name)
             if isinstance(maybe_class, type)\
-                    and issubclass(maybe_class, passes.base.pass_base.PassBase):
+                   and issubclass(maybe_class, passes.base.pass_base.PassBase):
                 result.append(maybe_class)
         return result
 
@@ -46,7 +47,6 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
     for pass_class in pass_classes:
 
         p = pass_class()
-
 
         if not p.enabled:
             continue
@@ -97,7 +97,6 @@ if __name__ == '__main__':
     diags = poor_man_unique(diags)
 
     if diags:
-        print('\n'.join('    '+str(d) for d in diags))
+        print('\n'.join('    ' + str(d) for d in diags))
     else:
         print('all clear')
-

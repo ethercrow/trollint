@@ -5,6 +5,7 @@ import re
 
 re_method_decl = re.compile(r'^- \([^\)]+\)\w.*$')
 
+
 class ObjCMethodDecls(TokenPassBase):
 
     def __init__(self):
@@ -17,10 +18,12 @@ class ObjCMethodDecls(TokenPassBase):
 
         def msg(cur):
             with open(cur.location.file.name) as fi:
-                token_text = fi.read()[cur.extent.start.offset:cur.extent.end.offset]
+                e = cur.extent
+                token_text = fi.read()[e.start.offset:e.end.offset]
 
             if token_text[0] == '-' and not re_method_decl.match(token_text):
-                return 'method declaration "' + cur.displayname + '" is against convention'
+                return 'method declaration "' + cur.displayname\
+                        + '" is against convention'
 
             return None
 

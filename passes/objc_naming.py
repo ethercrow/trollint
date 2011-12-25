@@ -2,6 +2,7 @@
 from base.token_regex_pass_base import TokenRegexPassBase
 import clang.cindex as cindex
 
+
 class ObjCNaming(TokenRegexPassBase):
 
     def __init__(self):

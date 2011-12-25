@@ -2,17 +2,20 @@
 from base.pass_base import PassBase
 from diagnostic import LintDiagnostic
 
+
 class LongLines(PassBase):
     """
-    Long lines reduce readability, diff-friendliness and usually look atrocious,
+    Long lines reduce readability, diff-friendliness
+    and usually look atrocious,
     especially in various web-based tools
     """
 
     needs = ['config', 'text', 'filename']
 
     def __init__(self):
+        super(LongLines, self).__init__()
         self.name = "VeryLongLines"
-        self.enabled = False
+        # self.enabled = False
 
     def get_diagnostics(self):
         result = []
@@ -20,7 +23,7 @@ class LongLines(PassBase):
         for i, l in lines:
             if len(l) > self.config.max_line_length(default=110):
                 d = LintDiagnostic()
-                d.line_number = i+1
+                d.line_number = i + 1
                 d.message = 'Line too long'
                 d.filename = self.filename
                 result.append(d)
