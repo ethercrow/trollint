@@ -1,0 +1,37 @@
+
+========
+trollint
+========
+
+What is this?
+=============
+
+Code analysis tool for automating some mundane parts of code review process.
+It is intented primarily for codebases compilable with clang.
+
+
+How do I use it?
+================
+
+::
+
+    cd my_shiny_project
+
+    # assuming you keep your source files in src directory
+    /path/to/trollint/trollint.py src/**/*.cpp
+
+    # again, assuming that your favorite browser is elinks
+    elinks report/index.html 
+
+
+It spits out a stacktrace about libclang.so (or dylib or dll). Wat do?
+======================================================================
+
+trollint uses libclang.so, ensure that LD_LIBRARY_PATH or whatever it is on your platform contains path to clang library.
+
+I want moar analyses
+====================
+
+    Add some to passes directory.
+
+    TODO: developer readme
