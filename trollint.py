@@ -8,6 +8,8 @@ import config
 import passes.base.pass_base
 from progressbar import progressbar
 from diagnostic import from_clang_diagnostic
+import report
+from itertools import groupby
 
 
 def discover_pass_classes():
@@ -45,7 +47,7 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
     tu = index.parse(filename, clang_args)
 
     diags = []
-    diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
+    # diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
 
     for pass_class in pass_classes:
 
@@ -101,7 +103,18 @@ if __name__ == '__main__':
 
     diags = poor_man_unique(diags)
 
-    if diags:
-        print('\n'.join('    ' + str(d) for d in diags))
-    else:
+    def group_diagnostics_by_files(ds):
+
+        def file_from_group(g):
+            return {'name': g[0], 'diagnostics': list(g[1])}
+
+        result = [file_from_group(g) for g in groupby(ds,
+                                                      lambda d: d.filename)]
+        return result
+
+    files_with_diags = group_diagnostics_by_files(diags)
+
+    report.render_to_directory('report', 'OHai', files_with_diags)
+
+    if not diags:
         print('all clear')
