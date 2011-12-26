@@ -6,7 +6,7 @@ import sys
 import clang.cindex as cindex
 import config
 import passes.base.pass_base
-
+from progressbar import progressbar
 
 def discover_pass_classes():
     import imp
@@ -80,8 +80,10 @@ if __name__ == '__main__':
         clang_args = []
 
     diags = []
-    for filename in filenames:
+
+    for filename in progressbar(filenames):
         diags += collect_lint_diagnostics(filename, pass_classes, clang_args)
+
     diags = sorted(diags, key=lambda d: d.line_number)
     diags = sorted(diags, key=lambda d: d.filename)
 
