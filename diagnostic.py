@@ -8,7 +8,7 @@ class LintDiagnostic(object):
         self.filename = ''
 
     def __str__(self):
-        return '{}:{}: {}'.format(self.filename,
+        return '{0}:{1}: {2}'.format(self.filename,
                                   self.line_number, self.message)
 
     def __eq__(self, rhs):

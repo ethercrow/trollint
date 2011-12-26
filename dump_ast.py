@@ -6,8 +6,7 @@ import clang.cindex as cindex
 
 
 def print_cursor_recursive(cur, blob, depth=0):
-    # print('{} {} | {}'.format(' '*4*depth, cur.kind, cur.displayname))
-    print('{} {} | {}'.format(' ' * 4 * depth, cur.kind,
+    print('{0} {1} | {2}'.format(' ' * 4 * depth, cur.kind,
         blob[cur.extent.start.offset:cur.extent.end.offset]))
     for child in cur.get_children():
         print_cursor_recursive(child, blob, depth + 1)

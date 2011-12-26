@@ -8,7 +8,7 @@ class TrailingWhitespace(LineRegexPassBase):
 
         super(TrailingWhitespace, self).__init__()
 
-        # self.enabled = False
+        self.enabled = False
         self.name = 'Trailing Whitespace'
         self.regex_string = r'\s+$'
         self.message = 'Line has trailing whitespace'

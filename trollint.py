@@ -38,7 +38,7 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
         with open(filename) as fi:
             blob = fi.read()
     except IOError:
-        print('Could not open file {}'.format(filename))
+        print('Could not open file {0}'.format(filename))
         return []
 
     index = cindex.Index.create()
