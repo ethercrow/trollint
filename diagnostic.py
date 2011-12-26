@@ -18,3 +18,13 @@ class LintDiagnostic(object):
 
     def __ne__(self, rhs):
         return not (self == rhs)
+
+
+def from_clang_diagnostic(cd, filename):
+    result = LintDiagnostic()
+
+    result.line_number = cd.location.line
+    result.filename = cd.location.file.name if cd.location.file else filename
+    result.message = cd.spelling
+
+    return result

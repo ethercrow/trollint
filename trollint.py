@@ -7,6 +7,8 @@ import clang.cindex as cindex
 import config
 import passes.base.pass_base
 from progressbar import progressbar
+from diagnostic import from_clang_diagnostic
+
 
 def discover_pass_classes():
     import imp
@@ -32,8 +34,6 @@ def discover_pass_classes():
 
 def collect_lint_diagnostics(filename, pass_classes, clang_args):
 
-    diags = []
-
     try:
         with open(filename) as fi:
             blob = fi.read()
@@ -43,6 +43,9 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
 
     index = cindex.Index.create()
     tu = index.parse(filename, clang_args)
+
+    diags = []
+    diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
 
     for pass_class in pass_classes:
 
