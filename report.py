@@ -25,9 +25,9 @@ def render_to_directory(dirname, title, files):
     single_file_template = load_template('report_single_file.jinja')
 
     with open(os.path.join(dirname, 'index.html'), 'w') as fo:
-        fo.write(index_template.render(files=files, title=title))
+        fo.write(index_template.render(files=files, title=title).encode('utf8'))
 
     for f in files:
         with open(os.path.join(dirname, f['name'].replace('/', '_')+'.html'), 'w') as fo:
             fo.write(single_file_template.render(filename=f['name'],
-                                                 diagnostics=f['diagnostics']))
+                                                 diagnostics=f['diagnostics']).encode('utf8'))

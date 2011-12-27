@@ -7,6 +7,5 @@ class NonAscii(LineRegexPassBase):
 
         super(NonAscii, self).__init__()
 
-        self.name = 'Non-ASCII Characters'
         self.regex_string = r'[\x80-\xff]'
         self.message = 'Line has non-ascii characters'

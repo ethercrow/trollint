@@ -16,6 +16,10 @@
     {% for d in diagnostics %}
         <tr>
             <td>{{ d.line_number }}</td>
+            <td><pre>{{ d.context }}</pre></td>
+        </tr>
+        <tr>
+            <td></td>
             <td>{{ d.message }}</td>
         </tr>
     {% endfor %}

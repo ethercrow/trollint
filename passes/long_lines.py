@@ -14,7 +14,6 @@ class LongLines(PassBase):
 
     def __init__(self):
         super(LongLines, self).__init__()
-        self.name = "VeryLongLines"
         # self.enabled = False
 
     def get_diagnostics(self):
@@ -24,7 +23,8 @@ class LongLines(PassBase):
             if len(l) > self.config.max_line_length(default=110):
                 d = LintDiagnostic()
                 d.line_number = i + 1
-                d.message = 'Line too long'
+                d.message = 'Line too long ({0})'.format(len(l))
                 d.filename = self.filename
+                d.context = l.strip()
                 result.append(d)
         return result

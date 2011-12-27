@@ -24,5 +24,7 @@ class LineRegexPassBase(PassBase):
                 d.line_number = i
                 d.message = self.message
                 d.filename = self.filename
+                d.context = l
                 result.append(d)
+
         return result

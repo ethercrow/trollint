@@ -3,7 +3,6 @@
 class PassBase(object):
 
     def __init__(self):
-        self.name = 'Empty pass'
         self.enabled = True
 
         self.filename = None
@@ -13,3 +12,7 @@ class PassBase(object):
 
     def get_diagnostics(self):
         return []
+
+    @property
+    def name(self):
+        return self.__class__.__name__

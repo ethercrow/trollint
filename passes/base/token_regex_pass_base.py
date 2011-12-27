@@ -1,8 +1,8 @@
 
 import re
-
 from pass_base import PassBase
 from diagnostic import LintDiagnostic
+from utils import full_text_for_cursor
 
 
 class TokenRegexPassBase(PassBase):
@@ -43,6 +43,7 @@ class TokenRegexPassBase(PassBase):
                 d.line_number = c.location.line
                 d.message = self.message.format(cur=c)
                 d.filename = c.location.file.name
+                d.context = c.displayname
                 diags.append(d)
 
         return diags

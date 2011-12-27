@@ -1,7 +1,9 @@
 
 from base.token_pass_base import TokenPassBase
 import clang.cindex as cindex
+from diagnostic import LintDiagnostic
 import re
+from utils import full_text_for_cursor
 
 re_method_decl = re.compile(r'^- \([^\)]+\)\w.*$')
 
@@ -13,18 +15,21 @@ class ObjCMethodDecls(TokenPassBase):
         super(ObjCMethodDecls, self).__init__()
 
         self.cursor_kind = cindex.CursorKind.OBJC_INSTANCE_METHOD_DECL
-        self.name = 'ObjCMethodDecls'
-        self.message = 'method declaration is against convention'
 
-        def msg(cur):
-            with open(cur.location.file.name) as fi:
-                e = cur.extent
-                token_text = fi.read()[e.start.offset:e.end.offset]
+        def maybe_diagnostic(cur):
+            first_line = full_text_for_cursor(cur).split('\n')[0]
 
-            if token_text[0] == '-' and not re_method_decl.match(token_text):
-                return 'method declaration "' + cur.displayname\
-                        + '" is against convention'
+            if first_line[0] == '-' and not re_method_decl.match(first_line):
+
+                d = LintDiagnostic()
+                d.line_number = cur.location.line
+                d.message =  "method declaration whitespace doesn't match " +\
+                             "template '- (Foo)barBaz:(Baz)baz'"
+                d.filename = cur.location.file.name
+                d.context = first_line
+
+                return d
 
             return None
 
-        self.maybe_message = msg
+        self.maybe_diagnostic = maybe_diagnostic

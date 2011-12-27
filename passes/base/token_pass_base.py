@@ -1,6 +1,5 @@
 
 from pass_base import PassBase
-from diagnostic import LintDiagnostic
 
 
 class TokenPassBase(PassBase):
@@ -34,12 +33,8 @@ class TokenPassBase(PassBase):
 
         for c in curs:
 
-            msg = self.maybe_message(c)
-            if msg:
-                d = LintDiagnostic()
-                d.line_number = c.location.line
-                d.message = msg
-                d.filename = c.location.file.name
+            d = self.maybe_diagnostic(c)
+            if d:
                 diags.append(d)
 
         return diags
