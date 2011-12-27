@@ -23,8 +23,8 @@ class ObjCMethodDecls(TokenPassBase):
 
                 d = LintDiagnostic()
                 d.line_number = cur.location.line
-                d.message =  "method declaration whitespace doesn't match " +\
-                             "template '- (Foo)barBaz:(Baz)baz'"
+                d.message = "method declaration whitespace doesn't match "\
+                            "template '- (Foo)barBaz:(Baz)baz'"
                 d.filename = cur.location.file.name
                 d.context = first_line
 

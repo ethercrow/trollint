@@ -10,9 +10,10 @@ def load_template(filename):
             'templates', filename)
 
     with open(abs_path) as fi:
-        template =  j2.Template(fi.read())
+        template = j2.Template(fi.read())
 
     return template
+
 
 def render_to_directory(dirname, title, files):
 
@@ -25,9 +26,12 @@ def render_to_directory(dirname, title, files):
     single_file_template = load_template('report_single_file.jinja')
 
     with open(os.path.join(dirname, 'index.html'), 'w') as fo:
-        fo.write(index_template.render(files=files, title=title).encode('utf8'))
+        fo.write(index_template.render(files=files,
+                                       title=title).encode('utf8'))
 
     for f in files:
-        with open(os.path.join(dirname, f['name'].replace('/', '_')+'.html'), 'w') as fo:
-            fo.write(single_file_template.render(filename=f['name'],
-                                                 diagnostics=f['diagnostics']).encode('utf8'))
+        path = os.path.join(dirname, f['name'].replace('/', '_') + '.html')
+        text = single_file_template.render(filename=f['name'],
+                                           diagnostics=f['diagnostics'])
+        with open(path, 'w') as fo:
+            fo.write(text.encode('utf8'))

@@ -73,16 +73,7 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
     return diags
 
 
-if __name__ == '__main__':
-
-    filenames = sys.argv[1:]
-
-    pass_classes = discover_pass_classes()
-    try:
-        with open('.clang_complete') as fi:
-            clang_args = [l.rstrip() for l in fi.readlines()]
-    except IOError:
-        clang_args = []
+def collect_all_lint_diagnostics(filenames, pass_classes, clang_args):
 
     diags = []
 
@@ -92,7 +83,8 @@ if __name__ == '__main__':
     diags = sorted(diags, key=lambda d: d.line_number)
     diags = sorted(diags, key=lambda d: d.filename)
 
-    def poor_man_unique(xs):
+    # is there a standard function to do this?
+    def unique(xs):
         if not xs:
             return []
         result = xs[0:1]
@@ -101,7 +93,29 @@ if __name__ == '__main__':
                 result.append(x)
         return result
 
-    diags = poor_man_unique(diags)
+    return unique(diags)
+
+
+def get_clang_args():
+    try:
+        with open('.clang_complete') as fi:
+            return [l.rstrip() for l in fi.readlines()]
+    except IOError:
+        return []
+
+if __name__ == '__main__':
+
+    sys.path.append(os.path.dirname(sys.argv[0]))
+
+    print(sys.path)
+
+    filenames = sys.argv[1:]
+
+    pass_classes = discover_pass_classes()
+
+    clang_args = get_clang_args()
+
+    diags = collect_all_lint_diagnostics(filenames, pass_classes, clang_args)
 
     def group_diagnostics_by_files(ds):
 
