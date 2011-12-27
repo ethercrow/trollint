@@ -10,12 +10,18 @@
     <table>
         <tr>
             <th>Filename</th>
-            <th>Diagnostic count</th>
+            {% for dcat in diagnostic_categories %}
+            <th>{{ dcat }}</th>
+            {% endfor %}
         </tr>
     {% for f in files %}
         <tr>
-            <td><a href="{{ f.name | replace('/', '_')}}.html">{{ f.name }}</td>
-            <td>{{ f.diagnostics | count }}</td>
+            <td>{{ f.name }}</td>
+            {% for dcat in diagnostic_categories %}
+            <td><a href="{{ (f.name + '_' + dcat)| replace('/', '_')}}.html">
+                {{ f.diagnostic_groups[dcat] | count }}
+            </a></td>
+            {% endfor %}
         </tr>
     {% endfor %}
     </table>

@@ -25,13 +25,18 @@ def render_to_directory(dirname, title, files):
     index_template = load_template('report_index.jinja')
     single_file_template = load_template('report_single_file.jinja')
 
+    # TODO unhardcode list of diagnostic categories
     with open(os.path.join(dirname, 'index.html'), 'w') as fo:
         fo.write(index_template.render(files=files,
-                                       title=title).encode('utf8'))
+                               diagnostic_categories=['Style', 'Misc'],
+                               title=title).encode('utf8'))
 
     for f in files:
-        path = os.path.join(dirname, f['name'].replace('/', '_') + '.html')
-        text = single_file_template.render(filename=f['name'],
-                                           diagnostics=f['diagnostics'])
-        with open(path, 'w') as fo:
-            fo.write(text.encode('utf8'))
+        for dname, ds in f['diagnostic_groups'].iteritems():
+            path = os.path.join(dirname, f['name'].replace('/', '_'))
+            path += '_' + dname + '.html'
+
+            text = single_file_template.render(filename=f['name'],
+                                   diagnostics=ds)
+            with open(path, 'w') as fo:
+                fo.write(text.encode('utf8'))

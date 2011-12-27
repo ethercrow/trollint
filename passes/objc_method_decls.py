@@ -15,6 +15,7 @@ class ObjCMethodDecls(TokenPassBase):
         super(ObjCMethodDecls, self).__init__()
 
         self.cursor_kind = cindex.CursorKind.OBJC_INSTANCE_METHOD_DECL
+        self.category = 'Style'
 
         def maybe_diagnostic(cur):
             first_line = full_text_for_cursor(cur).split('\n')[0]
@@ -27,6 +28,7 @@ class ObjCMethodDecls(TokenPassBase):
                             "template '- (Foo)barBaz:(Baz)baz'"
                 d.filename = cur.location.file.name
                 d.context = first_line
+                d.category = self.category
 
                 return d
 

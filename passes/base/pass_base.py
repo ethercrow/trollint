@@ -9,6 +9,7 @@ class PassBase(object):
         self.text = None
         self.config = None
         self.cursor = None
+        self.category = u'Other'
 
     def get_diagnostics(self):
         return []

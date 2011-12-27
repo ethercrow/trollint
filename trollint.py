@@ -105,10 +105,6 @@ def get_clang_args():
 
 if __name__ == '__main__':
 
-    sys.path.append(os.path.dirname(sys.argv[0]))
-
-    print(sys.path)
-
     filenames = sys.argv[1:]
 
     pass_classes = discover_pass_classes()
@@ -117,18 +113,23 @@ if __name__ == '__main__':
 
     diags = collect_all_lint_diagnostics(filenames, pass_classes, clang_args)
 
-    def group_diagnostics_by_files(ds):
+    def group_diagnostics(ds):
 
         def file_from_group(g):
-            return {'name': g[0], 'diagnostics': list(g[1])}
+            name = g[0]
+            # TODO unhardcode list of diagnostic categories
+            categories = {'Misc': [], 'Style': []}
+            for cat, ds in groupby(g[1], lambda d: d.category):
+                categories.update({cat: list(ds)})
+            return {'name': name, 'diagnostic_groups': categories}
 
         result = [file_from_group(g) for g in groupby(ds,
                                                       lambda d: d.filename)]
         return result
 
-    files_with_diags = group_diagnostics_by_files(diags)
+    files_with_categorized_diags = group_diagnostics(diags)
 
-    report.render_to_directory('report', 'OHai', files_with_diags)
+    report.render_to_directory('report', 'OHai', files_with_categorized_diags)
 
     if not diags:
         print('all clear')

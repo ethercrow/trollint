@@ -44,6 +44,7 @@ class TokenRegexPassBase(PassBase):
                 d.message = self.message.format(cur=c)
                 d.filename = c.location.file.name
                 d.context = c.displayname
+                d.category = self.category
                 diags.append(d)
 
         return diags

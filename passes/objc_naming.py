@@ -12,3 +12,4 @@ class ObjCIvarNaming(TokenRegexPassBase):
         self.message = 'ivar name "{cur.displayname}" is against convention'
         self.regex_string = r'^[a-zA-Z0-9]+_$'
         self.cursor_kind = cindex.CursorKind.OBJC_IVAR_DECL
+        self.category = 'Style'

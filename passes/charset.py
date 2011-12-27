@@ -9,3 +9,4 @@ class NonAscii(LineRegexPassBase):
 
         self.regex_string = r'[\x80-\xff]'
         self.message = 'Line has non-ascii characters'
+        self.category = 'Blasphemy'

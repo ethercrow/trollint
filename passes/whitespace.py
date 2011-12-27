@@ -11,6 +11,7 @@ class TrailingWhitespace(LineRegexPassBase):
         self.enabled = False
         self.regex_string = r'\s+$'
         self.message = 'Line has trailing whitespace'
+        self.category = 'Style'
 
 
 class Tabs(LineRegexPassBase):
@@ -21,3 +22,4 @@ class Tabs(LineRegexPassBase):
 
         self.regex_string = r'\t'
         self.message = 'Line has tabs'
+        self.category = 'Style'

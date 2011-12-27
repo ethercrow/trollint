@@ -14,7 +14,9 @@ class LongLines(PassBase):
 
     def __init__(self):
         super(LongLines, self).__init__()
+
         # self.enabled = False
+        self.category = 'Style'
 
     def get_diagnostics(self):
         result = []
@@ -26,5 +28,6 @@ class LongLines(PassBase):
                 d.message = 'Line too long ({0})'.format(len(l))
                 d.filename = self.filename
                 d.context = l.strip()
+                d.category = self.category
                 result.append(d)
         return result
