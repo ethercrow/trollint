@@ -25,7 +25,8 @@ class ObjCIvarNaming(TokenPassBase):
 
             d = LintDiagnostic()
             d.line_number = cur.location.line
-            d.message = "ivar {0} is not named likeThis_".format(cur.displayname)
+            d.message = "ivar {0} is not named likeThis_"\
+                    .format(cur.displayname)
             d.filename = cur.location.file.name
             d.context = cur.displayname
             d.category = self.category
@@ -33,6 +34,7 @@ class ObjCIvarNaming(TokenPassBase):
             return d
 
         return None
+
 
 class ObjCSynthesizedNaming(TokenPassBase):
 
@@ -61,11 +63,13 @@ class ObjCSynthesizedNaming(TokenPassBase):
 
         if '=' in syn_statement:
             if not self.re_long_form.match(syn_statement):
-                d.message = "synthesize statement doesn't match template '@synthesize fooBar = fooBar_'"
+                d.message = "synthesize statement doesn't match "\
+                        "template '@synthesize fooBar = fooBar_'"
                 return d
         else:
             if not self.re_short_form.match(syn_statement):
-                d.message = "synthesize statement doesn't match template '@synthesize fooBar'"
+                d.message = "synthesize statement doesn't match "\
+                        "template '@synthesize fooBar'"
                 return d
 
         return None

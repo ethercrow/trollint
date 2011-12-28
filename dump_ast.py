@@ -5,6 +5,7 @@ import sys
 import clang.cindex as cindex
 from utils import full_text_for_cursor
 
+
 def print_cursor_recursive(cur, depth=0):
 
     token_text = full_text_for_cursor(cur)

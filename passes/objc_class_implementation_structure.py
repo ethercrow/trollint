@@ -14,6 +14,7 @@ DEALLOC_TEMPLATE = '''
     family methods in implementation section
 '''
 
+
 class ObjCClassImplementationStructure(TokenPassBase):
 
     def __init__(self):
@@ -61,7 +62,6 @@ class ObjCClassImplementationStructure(TokenPassBase):
                 if not is_dealloc(this_should_be_dealloc):
                     d.message = DEALLOC_TEMPLATE.format(class_name)
                     return d
-
 
             return None
 

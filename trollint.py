@@ -134,7 +134,8 @@ if __name__ == '__main__':
 
     files_with_categorized_diags = group_diagnostics(diags)
 
-    report.render_to_directory('report', 'OHai', files_with_categorized_diags, category_names)
+    report.render_to_directory('report', 'OHai',
+            files_with_categorized_diags, category_names)
 
     if not diags:
         print('all clear')
