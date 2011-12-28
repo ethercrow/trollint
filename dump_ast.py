@@ -3,13 +3,16 @@
 
 import sys
 import clang.cindex as cindex
+from utils import full_text_for_cursor
 
+def print_cursor_recursive(cur, depth=0):
 
-def print_cursor_recursive(cur, blob, depth=0):
-    print('{0} {1} | {2}'.format(' ' * 4 * depth, cur.kind,
-        blob[cur.extent.start.offset:cur.extent.end.offset]))
+    token_text = full_text_for_cursor(cur)
+
+    print('{0} {1} | {2}'.format(' ' * 4 * depth, cur.kind, token_text))
+
     for child in cur.get_children():
-        print_cursor_recursive(child, blob, depth + 1)
+        print_cursor_recursive(child, depth + 1)
 
 
 if __name__ == '__main__':
@@ -28,4 +31,4 @@ if __name__ == '__main__':
     with open(filename) as fi:
         blob = fi.read()
 
-    print_cursor_recursive(tu.cursor, blob)
+    print_cursor_recursive(tu.cursor)
