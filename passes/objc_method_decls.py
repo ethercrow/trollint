@@ -17,21 +17,19 @@ class ObjCMethodDecls(TokenPassBase):
         self.cursor_kind = cindex.CursorKind.OBJC_INSTANCE_METHOD_DECL
         self.category = 'Style'
 
-        def maybe_diagnostic(cur):
-            first_line = full_text_for_cursor(cur).split('\n')[0]
+    def maybe_diagnostic(self, cur):
+        first_line = full_text_for_cursor(cur).split('\n')[0]
 
-            if first_line[0] == '-' and not re_method_decl.match(first_line):
+        if first_line[0] == '-' and not re_method_decl.match(first_line):
 
-                d = LintDiagnostic()
-                d.line_number = cur.location.line
-                d.message = "method declaration whitespace doesn't match "\
-                            "template '- (Foo)barBaz:(Baz)baz'"
-                d.filename = cur.location.file.name
-                d.context = first_line
-                d.category = self.category
+            d = LintDiagnostic()
+            d.line_number = cur.location.line
+            d.message = "method declaration whitespace doesn't match "\
+                        "template '- (Foo)barBaz:(Baz)baz'"
+            d.filename = cur.location.file.name
+            d.context = first_line
+            d.category = self.category
 
-                return d
+            return d
 
-            return None
-
-        self.maybe_diagnostic = maybe_diagnostic
+        return None

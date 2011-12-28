@@ -12,6 +12,9 @@ class LineRegexPassBase(PassBase):
     def __init__(self):
         super(LineRegexPassBase, self).__init__()
 
+        self.regex_string = None
+        self.message = ''
+
     def get_diagnostics(self):
         result = []
         lines = enumerate(self.text.split('\n'))

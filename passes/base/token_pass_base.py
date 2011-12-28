@@ -13,6 +13,9 @@ class TokenPassBase(PassBase):
         self.conditional = None
         self.message = None
 
+    def maybe_diagnostic(self, cursor):
+        raise NotImplementedError
+
     def get_diagnostics(self):
 
         def filter_cursors(cur):
