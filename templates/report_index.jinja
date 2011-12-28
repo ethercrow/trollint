@@ -18,9 +18,11 @@
         <tr>
             <td>{{ f.name }}</td>
             {% for dcat in diagnostic_categories %}
-            <td><a href="{{ (f.name + '_' + dcat)| replace('/', '_')}}.html">
+            <td style="background-color: {% if f.diagnostic_groups[dcat] %} #FFCCCC {% else %} #CCFFCC {% endif %} ">
+                <a href="{{ (f.name + '_' + dcat)| replace('/', '_')}}.html">
                 {{ f.diagnostic_groups[dcat] | count }}
-            </a></td>
+                </a>
+            </td>
             {% endfor %}
         </tr>
     {% endfor %}
