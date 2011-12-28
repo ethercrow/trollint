@@ -821,6 +821,10 @@ class Cursor(Structure):
     """
     _fields_ = [("_kind_id", c_int), ("xdata", c_int), ("data", c_void_p * 3)]
 
+    def __init__(self):
+        super(Cursor, self).__init__()
+        self.parent = None
+
     def __eq__(self, other):
         return Cursor_eq(self, other)
 
@@ -922,6 +926,7 @@ class Cursor(Structure):
             # FIXME: Document this assertion in API.
             # FIXME: There should just be an isNull method.
             assert child != Cursor_null()
+            child.parent = self
             children.append(child)
             return 1 # continue
         children = []

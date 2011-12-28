@@ -38,7 +38,8 @@ class TokenRegexPassBase(PassBase):
 
         for c in curs:
 
-            if not regex.search(c.displayname):
+            if not regex.search(c.displayname) and c.location.file:
+
                 d = LintDiagnostic()
                 d.line_number = c.location.line
                 d.message = self.message.format(cur=c)
