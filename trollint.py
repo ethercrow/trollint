@@ -113,12 +113,17 @@ if __name__ == '__main__':
 
     diags = collect_all_lint_diagnostics(filenames, pass_classes, clang_args)
 
+    category_names = list(set([d.category for d in diags]))
+
     def group_diagnostics(ds):
 
         def file_from_group(g):
             name = g[0]
-            # TODO unhardcode list of diagnostic categories
-            categories = {'Misc': [], 'Style': []}
+
+            categories = {}
+            for cname in category_names:
+                categories[cname] = []
+
             for cat, ds in groupby(g[1], lambda d: d.category):
                 categories.update({cat: list(ds)})
             return {'name': name, 'diagnostic_groups': categories}
@@ -129,7 +134,7 @@ if __name__ == '__main__':
 
     files_with_categorized_diags = group_diagnostics(diags)
 
-    report.render_to_directory('report', 'OHai', files_with_categorized_diags)
+    report.render_to_directory('report', 'OHai', files_with_categorized_diags, category_names)
 
     if not diags:
         print('all clear')

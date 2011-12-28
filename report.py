@@ -15,7 +15,7 @@ def load_template(filename):
     return template
 
 
-def render_to_directory(dirname, title, files):
+def render_to_directory(dirname, title, files, category_names):
 
     try:
         os.mkdir(dirname)
@@ -25,10 +25,9 @@ def render_to_directory(dirname, title, files):
     index_template = load_template('report_index.jinja')
     single_file_template = load_template('report_single_file.jinja')
 
-    # TODO unhardcode list of diagnostic categories
     with open(os.path.join(dirname, 'index.html'), 'w') as fo:
         fo.write(index_template.render(files=files,
-                               diagnostic_categories=['Style', 'Misc'],
+                               diagnostic_categories=category_names,
                                title=title).encode('utf8'))
 
     for f in files:
