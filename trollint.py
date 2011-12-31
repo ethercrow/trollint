@@ -10,6 +10,7 @@ from progressbar import progressbar
 from diagnostic import from_clang_diagnostic
 import report
 from itertools import groupby
+from utils import get_clang_args
 
 
 def discover_pass_classes():
@@ -44,10 +45,12 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
         return []
 
     index = cindex.Index.create()
-    tu = index.parse(filename, clang_args)
+    parse_opts = cindex.TranslationUnit.PrecompiledPreamble
+
+    tu = index.parse(filename, clang_args, options=parse_opts)
 
     diags = []
-    # diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
+    diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
 
     for pass_class in pass_classes:
 
@@ -95,14 +98,6 @@ def collect_all_lint_diagnostics(filenames, pass_classes, clang_args):
 
     return unique(diags)
 
-
-def get_clang_args():
-    try:
-        with open('.clang_complete') as fi:
-            return [l.rstrip() for l in fi.readlines()]
-    except IOError:
-        return []
-
 if __name__ == '__main__':
 
     filenames = sys.argv[1:]
@@ -128,8 +123,9 @@ if __name__ == '__main__':
                 categories.update({cat: list(ds)})
             return {'name': name, 'diagnostic_groups': categories}
 
-        result = [file_from_group(g) for g in groupby(ds,
-                                                      lambda d: d.filename)]
+        result = [file_from_group(g) for g in groupby(ds, lambda d: d.filename)
+                                     if not os.path.isabs(g[0])
+                ]
         return result
 
     files_with_categorized_diags = group_diagnostics(diags)

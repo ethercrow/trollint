@@ -50,5 +50,10 @@ def from_clang_diagnostic(cd, filename):
     result.line_number = cd.location.line
     result.filename = cd.location.file.name if cd.location.file else filename
     result.message = cd.spelling
+    result.category = 'Clang'
+
+    if cd.location.file:
+        with open(cd.location.file.name) as fi:
+            result.context = fi.readlines()[cd.location.line]
 
     return result
