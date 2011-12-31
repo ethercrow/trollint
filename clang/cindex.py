@@ -1401,6 +1401,15 @@ class TranslationUnit(ClangObject):
     provides read-only access to its top-level declarations.
     """
 
+    # enum CXTranslationUnit_Flags
+    Nothing = 0x0
+    DetailedPreprocessingRecord = 0x01
+    Incomplete = 0x02
+    PrecompiledPreamble = 0x04
+    CacheCompletionResults = 0x08
+    CXXPrecompiledPreamble = 0x10
+    CXXChainedPCH = 0x20
+
     def __init__(self, ptr):
         ClangObject.__init__(self, ptr)
 
