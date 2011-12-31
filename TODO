@@ -1,0 +1,41 @@
+
+Non-empty case without break is suspicios
+=========================================
+
+::
+
+    switch(foo) {
+        case 0:        // <- this is probably ok
+        case 1:
+            bar();
+            break;
+
+        case 2:
+            baz();     // <- this is suspicious
+        case 3:
+            xyzzy();
+            break;
+        
+        case 4:
+            baz();
+            // nobreak    <- this is clearly intentional
+        case 5:
+            xyzzy();
+            break;
+    }
+
+Scope reduce
+============
+
+::
+
+    {
+        int i;
+        {
+            // i should be declared here
+            i = 0;
+        }
+    }
+
+Unused private methods
+======================
