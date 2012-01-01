@@ -2,6 +2,7 @@
 import os
 from os.path import join
 
+
 def full_text_for_cursor(cur):
     if cur.location.file:
         with open(cur.location.file.name) as fi:

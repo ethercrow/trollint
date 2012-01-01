@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     for d in tu.diagnostics:
         if d.location.file:
-            print d.location.file.name + ':' + str(d.location.line) + ' ' + d.spelling
+            print(d.location.file.name + ':' + str(d.location.line)
+                    + ' ' + d.spelling)
         else:
-            print '???:' + str(d.location.line) + ' ' + d.spelling
+            print('???:' + str(d.location.line) + ' ' + d.spelling)

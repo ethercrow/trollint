@@ -1,6 +1,6 @@
 
 from pass_base import PassBase
-import os
+
 
 class TokenPassBase(PassBase):
 
