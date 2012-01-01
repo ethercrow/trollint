@@ -124,7 +124,8 @@ if __name__ == '__main__':
             return {'name': name, 'diagnostic_groups': categories}
 
         result = [file_from_group(g) for g in groupby(ds, lambda d: d.filename)
-                                     if not os.path.isabs(g[0])
+                     if not os.path.isabs(g[0]) and not g[0].startswith('opt')
+                     and not g[0].startswith('opt')
                 ]
         return result
 

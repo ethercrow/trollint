@@ -3,7 +3,7 @@
 
 import sys
 import clang.cindex as cindex
-from utils import full_text_for_cursor
+from utils import full_text_for_cursor, get_clang_args
 
 
 def print_cursor_recursive(cur, depth=0):
@@ -20,14 +20,8 @@ if __name__ == '__main__':
 
     filename = sys.argv[1]
 
-    try:
-        with open('.clang_complete') as fi:
-            clang_args = [l.rstrip() for l in fi.readlines()]
-    except IOError:
-        clang_args = []
-
     index = cindex.Index.create()
-    tu = index.parse(filename, clang_args)
+    tu = index.parse(filename, get_clang_args())
 
     with open(filename) as fi:
         blob = fi.read()

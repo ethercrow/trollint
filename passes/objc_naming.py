@@ -46,6 +46,7 @@ class ObjCSynthesizedNaming(TokenPassBase):
         self.category = 'Naming'
         self.re_short_form = re.compile(r'^[a-zA-Z0-9]+$')
         self.re_long_form = re.compile(r'^([a-zA-Z0-9]+) = \1_$')
+        self.re_macro_form = re.compile(r'SYNTHESIZE_IVAR\([a-zA-Z0-9]+\)')
 
     def maybe_diagnostic(self, cur):
         syn_statement = full_text_for_cursor(cur)
@@ -67,7 +68,8 @@ class ObjCSynthesizedNaming(TokenPassBase):
                         "template '@synthesize fooBar = fooBar_'"
                 return d
         else:
-            if not self.re_short_form.match(syn_statement):
+            if not self.re_short_form.match(syn_statement) and\
+               not self.re_macro_form.match(syn_statement):
                 d.message = "synthesize statement doesn't match "\
                         "template '@synthesize fooBar'"
                 return d

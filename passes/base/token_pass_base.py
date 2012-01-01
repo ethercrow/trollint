@@ -1,6 +1,6 @@
 
 from pass_base import PassBase
-
+import os
 
 class TokenPassBase(PassBase):
 
@@ -19,12 +19,6 @@ class TokenPassBase(PassBase):
     def get_diagnostics(self):
 
         def filter_cursors(cur):
-
-            if not cur.location.file:
-                return []
-
-            if cur.location.file.name.beginswith('/'):
-                return []
 
             if cur.kind == self.cursor_kind:
                 result = [cur]
