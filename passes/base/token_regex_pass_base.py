@@ -2,12 +2,13 @@
 import re
 from pass_base import PassBase
 from diagnostic import LintDiagnostic
-from utils import full_text_for_cursor
+from os.path import isabs
+from itertools import chain
 
 
 class TokenRegexPassBase(PassBase):
 
-    needs = ['config', 'filename', 'cursor']
+    needs = ['config', 'filename', 'cursors']
 
     def __init__(self):
         super(TokenRegexPassBase, self).__init__()
@@ -20,23 +21,18 @@ class TokenRegexPassBase(PassBase):
 
         def filter_cursors(cur):
 
-            if not cur.location.file:
-                return []
-
-            if cur.location.file.name.beginswith('/'):
-                return []
-
             if cur.kind == self.cursor_kind:
                 result = [cur]
             else:
                 result = []
 
             for child in cur.get_children():
-                result += filter_cursors(child)
+                if child.location.file and not isabs(child.location.file.name):
+                    result += filter_cursors(child)
 
             return result
 
-        curs = filter_cursors(self.cursor)
+        curs = chain(*map(filter_cursors, self.cursors))
 
         regex = re.compile(self.regex_string)
 

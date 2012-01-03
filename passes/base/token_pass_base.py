@@ -1,10 +1,12 @@
 
 from pass_base import PassBase
+from os.path import isabs
+from itertools import chain
 
 
 class TokenPassBase(PassBase):
 
-    needs = ['config', 'filename', 'cursor']
+    needs = ['config', 'filename', 'cursors']
 
     def __init__(self):
         super(TokenPassBase, self).__init__()
@@ -26,11 +28,12 @@ class TokenPassBase(PassBase):
                 result = []
 
             for child in cur.get_children():
-                result += filter_cursors(child)
+                if child.location.file and not isabs(child.location.file.name):
+                    result += filter_cursors(child)
 
             return result
 
-        curs = filter_cursors(self.cursor)
+        curs = chain(*map(filter_cursors, self.cursors))
 
         diags = []
 

@@ -22,7 +22,7 @@ class LongLines(PassBase):
         result = []
         lines = enumerate(self.text.split('\n'))
         for i, l in lines:
-            if len(l) > self.config.max_line_length(default=110):
+            if len(l) > self.config.max_line_length(default=100):
                 d = LintDiagnostic()
                 d.line_number = i + 1
                 d.message = 'Line too long ({0})'.format(len(l))

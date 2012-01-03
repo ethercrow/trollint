@@ -23,7 +23,12 @@ class ObjCClassImplementationStructure(TokenPassBase):
 
         self.cursor_kind = cindex.CursorKind.OBJC_IMPLEMENTATION_DECL
         self.category = 'Structure'
+
+        # TODO: check for init family properly
+        #       currenlty something like "- (void)initialFoo" will match
+        #       and it shouldn't
         self.re_init_decl = re.compile('^init')
+
         self.re_dealloc_decl = re.compile('^dealloc$')
 
         def maybe_diagnostic(cur):
