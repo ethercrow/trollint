@@ -8,7 +8,7 @@ class PassBase(object):
         self.filename = None
         self.text = None
         self.config = None
-        self.cursor = None
+        self.cursors = []
         self.category = u'Other'
 
     def get_diagnostics(self):
