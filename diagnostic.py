@@ -54,6 +54,6 @@ def from_clang_diagnostic(cd, filename):
 
     if cd.location.file:
         with open(cd.location.file.name) as fi:
-            result.context = fi.readlines()[cd.location.line]
+            result.context = fi.readlines()[cd.location.line - 1]
 
     return result

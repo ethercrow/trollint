@@ -2,6 +2,20 @@
 import os
 from os.path import join
 
+DEFAULT_WARNINGS = ['-Wall', '-Wextra', '-Wshadow',
+                    '-Winitializer-overrides',
+                    '-Wsemicolon-before-method-body ',
+                    '-Widiomatic-parentheses', '-Wdeprecated', '-Wdiv-by-zero',
+                    '-Wcomments', '-Wempty-body', '-Wextra-tokens',
+                    '-Wmissing-declarations', '-Wnull-dereference',
+                    '-Wnonnull', '-Wtautological-compare',
+                    '-Wprotocol', '-Wnonfragile-abi2',
+                    '-Wno-conversion', '-Wno-missing-field-initializers',
+                    '-Wno-unused-parameter', '-Wno-sign-compare',
+                    '-Wno-sentinel', '-Wunreachable-code',
+                    '-Wno-missing-braces'
+                   ]
+
 
 def full_text_for_cursor(cur):
     if cur.location.file:
@@ -105,6 +119,8 @@ def get_clang_args():
     # TODO: find pch more reliably
     # TODO: actually precompile this *pch*
     result += ['-include', 'clang.pch']
+
+    result += DEFAULT_WARNINGS
 
     for d in find_local_include_dirs():
         result += ['-I', d]

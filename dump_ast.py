@@ -9,8 +9,10 @@ from utils import full_text_for_cursor, get_clang_args
 def print_cursor_recursive(cur, depth=0):
 
     token_text = full_text_for_cursor(cur)
+    token_text = cur.displayname
 
-    print('{0} {1} | {2}'.format(' ' * 4 * depth, cur.kind, token_text))
+    print('{0} {1} | {2}'.format('->' * depth, cur.kind, token_text,
+        cur.location.file.name if cur.location.file else '???'))
 
     for child in cur.get_children():
         print_cursor_recursive(child, depth + 1)

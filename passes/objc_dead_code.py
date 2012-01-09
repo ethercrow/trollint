@@ -4,17 +4,6 @@ from base.pass_base import PassBase
 from diagnostic import LintDiagnostic
 from utils import full_text_for_cursor
 
-INIT_TEMPLATE = '''
-    all {0} instance methods of class {1} belonging to *init* family
-    should be the first {0} methods in implementation section.
-'''
-
-DEALLOC_TEMPLATE = '''
-    *dealloc* method of class {0} should be the next after *init*
-    family methods in implementation section
-'''
-
-
 class ObjCDeadIvar(PassBase):
 
     needs = ['cursors', 'filename']
@@ -36,8 +25,8 @@ class ObjCDeadIvar(PassBase):
         local_categories = [c for c in local_cursors if is_local_category(c)]
 
         class Extension(object):
-            def __init__(self, class_name, ivars):
-                self.class_name = class_name
+            def __init__(self, classname, ivars):
+                self.classname = classname
                 self.ivars = ivars
 
         exts = []
@@ -52,7 +41,7 @@ class ObjCDeadIvar(PassBase):
         for ext in exts:
             class_impl = [c for c in local_cursors\
                     if c.kind == ci.CursorKind.OBJC_IMPLEMENTATION_DECL and\
-                       c.displayname == ext.class_name][0]
+                    c.displayname == ext.classname][0]
 
             yet_unused_ivar_names = [i.displayname for i in ext.ivars]
 
