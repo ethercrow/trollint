@@ -115,9 +115,13 @@ def get_clang_args():
     # force 32bit arch even if we are on 64bit host
     result += ['-m32']
 
-    # TODO: parse xcode project file to see if
-    # ARC is enabled for this file
-    result += ['-fobjc-arc']
+    # TODO: ARC should be set per-file
+    for maybe_projdir in os.listdir('.'):
+        if maybe_projdir.endswith('.xcodeproj'):
+            with open(join(maybe_projdir, 'project.pbxproj')) as fi:
+                if 'CLANG_ENABLE_OBJC_ARC = YES' in fi.read():
+                    result += ['-fobjc-arc']
+                    break
 
     # TODO: find pch more reliably
     # TODO: actually precompile this *pch*
