@@ -39,3 +39,26 @@ Scope reduce
 
 Unused private methods
 ======================
+
+Empty compound statements
+=========================
+
+::
+
+    if (ololo) {
+
+    } else {
+
+    }
+
+Star alignment in pointer declarations
+======================================
+
+Newlines and braces
+===================
+
+Prevent overriding parent's private methods
+===========================================
+
+Bool variable used in bitwise &, | or ^
+=======================================
