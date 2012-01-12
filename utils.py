@@ -112,13 +112,18 @@ def get_clang_args():
     result += ['-fblocks', '-fobjc-nonfragile-abi']
     result += ['-fno-builtin']
 
+    # force 32bit arch even if we are on 64bit host
+    result += ['-m32']
+
     # TODO: parse xcode project file to see if
     # ARC is enabled for this file
     result += ['-fobjc-arc']
 
     # TODO: find pch more reliably
     # TODO: actually precompile this *pch*
-    result += ['-include', 'clang.pch']
+    for maybe_pch in os.listdir('.'):
+        if maybe_pch.endswith('.pch'):
+            result += ['-include', maybe_pch]
 
     result += DEFAULT_WARNINGS
 
