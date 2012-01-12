@@ -7,8 +7,14 @@ What is this?
 =============
 
 Code analysis tool for automating some mundane parts of code review process.
-It is intented primarily for codebases compilable with clang.
+It is intended primarily for codebases compilable with clang.
 
+Dependencies
+============
+
+    * Python 2.* (2.6 and 2.7 are known to work)
+    * jinja2
+    * libclang
 
 How do I use it?
 ================
