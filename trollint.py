@@ -10,7 +10,7 @@ from progressbar import progressbar
 from diagnostic import from_clang_diagnostic
 import report
 from itertools import groupby
-from utils import get_clang_args
+from utils import get_clang_args, unique
 
 
 def discover_pass_classes():
@@ -86,18 +86,19 @@ def collect_all_lint_diagnostics(filenames, pass_classes, clang_args):
     for filename in progressbar(filenames):
         diags += collect_lint_diagnostics(filename, pass_classes, clang_args)
 
+    def interesting_file(d):
+        if os.path.isabs(d.filename):
+            return False
+
+        if d.filename.startswith('opt') or d.filename.startswith('./opt'):
+            return False
+
+        return True
+
+    diags = filter(interesting_file, diags)
+
     diags = sorted(diags, key=lambda d: d.line_number)
     diags = sorted(diags, key=lambda d: d.filename)
-
-    # is there a standard function to do this?
-    def unique(xs):
-        if not xs:
-            return []
-        result = xs[0:1]
-        for x in xs:
-            if x != result[-1]:
-                result.append(x)
-        return result
 
     return unique(diags)
 
@@ -123,13 +124,14 @@ if __name__ == '__main__':
                 categories[cname] = []
 
             for cat, ds in groupby(g[1], lambda d: d.category):
-                categories.update({cat: list(ds)})
+                if cat in categories:
+                    categories[cat] += list(ds)
+                else:
+                    categories[cat] = list(ds)
             return {'name': name, 'diagnostic_groups': categories}
 
-        result = [file_from_group(g) for g in groupby(ds, lambda d: d.filename)
-                     if not os.path.isabs(g[0]) and not g[0].startswith('opt')
-                     and not g[0].startswith('opt')
-                ]
+        result = [file_from_group(g) for g
+                    in groupby(ds, lambda d: d.filename)]
         return result
 
     files_with_categorized_diags = group_diagnostics(diags)
