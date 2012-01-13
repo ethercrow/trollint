@@ -1,4 +1,11 @@
 
+==========
+New passes
+==========
+
+Get diagnostics from clang --analyze
+====================================
+
 Non-empty case without break is suspicios
 =========================================
 
@@ -62,3 +69,71 @@ Prevent overriding parent's private methods
 
 Bool variable used in bitwise &, | or ^
 =======================================
+
+Prefer early returns to reduce complexity
+=========================================
+
+Detect this ::
+
+    void f()
+    { 
+        if (foo) {
+            lots;
+            and;
+            lots;
+            of;
+            {
+                code;
+            }
+        }
+    }
+
+and suggest this::
+
+    void f()
+    { 
+        if (!foo) {
+            return;
+        }
+
+        lots;
+        and;
+        lots;
+        of;
+        {
+            code;
+        }
+    }
+
+Discourage using C arrays as ivars in ObjC classes
+==================================================
+
+loadView should set self.view or call [super loadView] before reading self.view
+===============================================================================
+
+Ivars inherited from UIView should be released and nulled in viewDidUnload
+==========================================================================
+
+Whitespace around binary operator should be symmetrical
+=======================================================
+
+::
+
+    a * b // OK
+    a*b // OK
+    a* b // BAD
+    a  * b // BAD
+
+===========
+Other stuff
+===========
+
+Config
+======
+
+Use multicore
+=============
+
+Nicer report pages
+==================
+
