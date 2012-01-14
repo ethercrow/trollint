@@ -135,6 +135,7 @@ def get_clang_args():
 
     return result
 
+
 # is there a standard function to do this?
 def unique(xs):
     if not xs:
@@ -144,4 +145,3 @@ def unique(xs):
         if x != result[-1]:
             result.append(x)
     return result
-

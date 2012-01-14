@@ -156,7 +156,6 @@ class ObjCEmptyMethods(TokenPassBase):
 
     def maybe_diagnostic(self, cur):
 
-
         for c in cur.get_children():
             if c.kind == ci.CursorKind.COMPOUND_STMT:
                 if not list(c.get_children()):
