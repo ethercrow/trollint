@@ -73,10 +73,9 @@ def find_local_include_dirs():
 
     result = []
 
-    for d in ('Classes', 'opt', 'src', 'geometry'):
-        for root, dirs, files in os.walk(d):
-            if any((f.endswith('.h') for f in files)):
-                result.append(root)
+    for root, dirs, files in os.walk('.'):
+        if any((f.endswith('.h') for f in files)):
+            result.append(root)
 
     return result
 
@@ -135,3 +134,14 @@ def get_clang_args():
         result += ['-I', d]
 
     return result
+
+# is there a standard function to do this?
+def unique(xs):
+    if not xs:
+        return []
+    result = xs[0:1]
+    for x in xs:
+        if x != result[-1]:
+            result.append(x)
+    return result
+

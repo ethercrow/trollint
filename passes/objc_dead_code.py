@@ -1,8 +1,10 @@
 
 import clang.cindex as ci
 from base.pass_base import PassBase
+from base.token_pass_base import TokenPassBase
 from diagnostic import LintDiagnostic
 from utils import full_text_for_cursor
+
 
 class ObjCDeadIvar(PassBase):
 
@@ -66,3 +68,33 @@ class ObjCDeadIvar(PassBase):
                     result.append(d)
 
         return result
+
+
+class ObjCEmptyMethods(TokenPassBase):
+
+    def __init__(self):
+
+        super(ObjCEmptyMethods, self).__init__()
+
+        self.cursor_kind = ci.CursorKind.OBJC_INSTANCE_METHOD_DECL
+        self.category = 'DeadCode'
+
+    def maybe_diagnostic(self, cur):
+
+
+        for c in cur.get_children():
+            if c.kind == ci.CursorKind.COMPOUND_STMT:
+                if not list(c.get_children()):
+
+                    d = LintDiagnostic()
+                    d.line_number = cur.location.line
+                    d.message = "method {0} has empty implementation"\
+                            .format(cur.displayname)
+                    d.filename = cur.location.file.name
+                    d.context = cur.displayname
+                    d.category = self.category
+
+                    return d
+                break
+
+        return None
