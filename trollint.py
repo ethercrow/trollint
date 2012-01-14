@@ -50,7 +50,9 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
     tu = index.parse(filename, clang_args, options=parse_opts)
 
     local_cursors = [c for c in tu.cursor.get_children()\
-            if c.location.file and not os.path.isabs(c.location.file.name)]
+            if c.location.file and not os.path.isabs(c.location.file.name)
+               and not c.location.file.name.startswith('opt')
+               and not c.location.file.name.startswith('./opt')]
 
     diags = []
     diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
