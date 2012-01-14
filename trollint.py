@@ -10,7 +10,7 @@ from progressbar import progressbar
 from diagnostic import from_clang_diagnostic
 import report
 from itertools import groupby
-from utils import get_clang_args, unique
+from utils import get_clang_args, unique, get_clang_analyzer_diagnostics
 
 
 def discover_pass_classes():
@@ -35,7 +35,7 @@ def discover_pass_classes():
     return sum([extract(m) for m in modules], [])
 
 
-def collect_lint_diagnostics(filename, pass_classes, clang_args):
+def lint_one_file(filename, pass_classes, clang_args):
 
     try:
         with open(filename) as fi:
@@ -55,7 +55,12 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
                and not c.location.file.name.startswith('./opt')]
 
     diags = []
+
+    # get clang compiler diagnostics
     diags += [from_clang_diagnostic(d, filename) for d in tu.diagnostics]
+
+    # get clang analyzer diagnostics
+    diags += get_clang_analyzer_diagnostics(filename, clang_args)
 
     for pass_class in pass_classes:
 
@@ -81,12 +86,12 @@ def collect_lint_diagnostics(filename, pass_classes, clang_args):
     return diags
 
 
-def collect_all_lint_diagnostics(filenames, pass_classes, clang_args):
+def lint_files(filenames, pass_classes, clang_args):
 
     diags = []
 
     for filename in progressbar(filenames):
-        diags += collect_lint_diagnostics(filename, pass_classes, clang_args)
+        diags += lint_one_file(filename, pass_classes, clang_args)
 
     def interesting_file(d):
         if os.path.isabs(d.filename):
@@ -112,7 +117,7 @@ if __name__ == '__main__':
 
     clang_args = get_clang_args()
 
-    diags = collect_all_lint_diagnostics(filenames, pass_classes, clang_args)
+    diags = lint_files(filenames, pass_classes, clang_args)
 
     category_names = list(set([d.category for d in diags]))
 
