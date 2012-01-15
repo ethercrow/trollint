@@ -45,7 +45,7 @@ class ObjCDeadIvar(PassBase):
                     if c.kind == ci.CursorKind.OBJC_IMPLEMENTATION_DECL and\
                     c.displayname == ext.classname][0]
 
-            ivar_usages = {i.displayname:0 for i in ext.ivars}
+            ivar_usages = {i.displayname: 0 for i in ext.ivars}
 
             method_impls = [c for c in class_impl.get_children()\
                     if c.kind == ci.CursorKind.OBJC_INSTANCE_METHOD_DECL]

@@ -146,5 +146,6 @@ def unique(xs):
             result.append(x)
     return result
 
+
 def get_clang_analyzer_diagnostics(filename, clang_args):
     return []
