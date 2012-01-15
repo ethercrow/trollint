@@ -45,26 +45,48 @@ class ObjCDeadIvar(PassBase):
                     if c.kind == ci.CursorKind.OBJC_IMPLEMENTATION_DECL and\
                     c.displayname == ext.classname][0]
 
-            yet_unused_ivar_names = [i.displayname for i in ext.ivars]
+            ivar_usages = {i.displayname:0 for i in ext.ivars}
 
-            def traverse(cur):
-                if cur.kind == ci.CursorKind.MEMBER_REF_EXPR\
-                        and cur.displayname in yet_unused_ivar_names:
-                    yet_unused_ivar_names.remove(cur.displayname)
+            method_impls = [c for c in class_impl.get_children()\
+                    if c.kind == ci.CursorKind.OBJC_INSTANCE_METHOD_DECL]
 
-                for child in cur.get_children():
-                    traverse(child)
+            def collect_ivar_usages(cur):
+                result = set()
 
-            traverse(class_impl)
+                def go(cur):
+                    if cur.kind == ci.CursorKind.MEMBER_REF_EXPR:
+                        result.add(cur.displayname)
+
+                    for child in cur.get_children():
+                        go(child)
+
+                go(cur)
+
+                return result
+
+            for mi in method_impls:
+                ivar_usages_in_method = collect_ivar_usages(mi)
+                for usage in ivar_usages_in_method:
+                    if usage in ivar_usages:
+                        ivar_usages[usage] += 1
 
             for ivar in ext.ivars:
-                if ivar.displayname in yet_unused_ivar_names:
+                if ivar_usages[ivar.displayname] == 0:
                     d = LintDiagnostic()
                     d.category = self.category
                     d.filename = self.filename
                     d.line = ivar.location.line
                     d.context = full_text_for_cursor(ivar)
                     d.message = 'unused ivar ' + ivar.displayname
+                    result.append(d)
+                elif ivar_usages[ivar.displayname] == 1:
+                    d = LintDiagnostic()
+                    d.category = self.category
+                    d.filename = self.filename
+                    d.line = ivar.location.line
+                    d.context = full_text_for_cursor(ivar)
+                    d.message = 'ivar {0} is used in only one method'.format(
+                            ivar.displayname)
                     result.append(d)
 
         return result
