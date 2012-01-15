@@ -117,6 +117,9 @@ Ivars inherited from UIView should be released and nulled in viewDidUnload
 Whitespace around binary operator should be symmetrical
 =======================================================
 
+Ivar never read or never written
+================================
+
 ::
 
     a * b // OK
