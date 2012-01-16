@@ -1,142 +1,104 @@
 
-==========
 New passes
 ==========
 
-Get diagnostics from clang --analyze
-====================================
+ * Get diagnostics from clang --analyze
+ * Non-empty case without break is suspicios
+    ::
 
-Non-empty case without break is suspicios
-=========================================
+        switch(foo) {
+            case 0:        // <- this is probably ok
+            case 1:
+                bar();
+                break;
 
-::
-
-    switch(foo) {
-        case 0:        // <- this is probably ok
-        case 1:
-            bar();
-            break;
-
-        case 2:
-            baz();     // <- this is suspicious
-        case 3:
-            xyzzy();
-            break;
-        
-        case 4:
-            baz();
-            // nobreak    <- this is clearly intentional
-        case 5:
-            xyzzy();
-            break;
-    }
-
-Scope reduce
-============
-
-::
-
-    {
-        int i;
-        {
-            // i should be declared here
-            i = 0;
-        }
-    }
-
-Unused private methods
-======================
-
-Empty compound statements
-=========================
-
-::
-
-    if (ololo) {
-
-    } else {
-
-    }
-
-Star alignment in pointer declarations
-======================================
-
-Newlines and braces
-===================
-
-Prevent overriding parent's private methods
-===========================================
-
-Bool variable used in bitwise &, | or ^
-=======================================
-
-Prefer early returns to reduce complexity
-=========================================
-
-Detect this ::
-
-    void f()
-    { 
-        if (foo) {
-            lots;
-            and;
-            lots;
-            of;
-            {
-                code;
-            }
-        }
-    }
-
-and suggest this::
-
-    void f()
-    { 
-        if (!foo) {
-            return;
+            case 2:
+                baz();     // <- this is suspicious
+            case 3:
+                xyzzy();
+                break;
+            
+            case 4:
+                baz();
+                // nobreak    <- this is clearly intentional
+            case 5:
+                xyzzy();
+                break;
         }
 
-        lots;
-        and;
-        lots;
-        of;
-        {
-            code;
-        }
-    }
+ * Scope reduce
+     ::
+ 
+         {
+             int i;
+             {
+                 // i should be declared here
+                 i = 0;
+             }
+         }
+ * Empty compound statements
+     ::
+ 
+         if (ololo) {
+ 
+         } else {
+ 
+         }
+ 
+ * Star alignment in pointer declarations
+ * Newlines and braces
+ * Prevent overriding parent's private methods
+ * Bool variable used in bitwise &, | or ^
+ * Prefer early returns to reduce complexity
+     Detect this ::
+ 
+         void f()
+         { 
+             if (foo) {
+                 lots;
+                 and;
+                 lots;
+                 of;
+                 {
+                     code;
+                 }
+             }
+         }
+ 
+     and suggest this::
+ 
+         void f()
+         { 
+             if (!foo) {
+                 return;
+             }
+ 
+             lots;
+             and;
+             lots;
+             of;
+             {
+                 code;
+             }
+         }
+ 
+ * Discourage using C arrays as ivars in ObjC classes
+ * loadView should set self.view or call [super loadView] before reading self.view
+ * Ivars inherited from UIView should be released and nulled in viewDidUnload
+ * Whitespace around binary operator should be symmetrical
+     ::
+ 
+         a * b // OK
+         a*b // OK
+         a* b // BAD
+         a  * b // BAD
 
-Discourage using C arrays as ivars in ObjC classes
-==================================================
+* Ivar never read or never written
 
-loadView should set self.view or call [super loadView] before reading self.view
-===============================================================================
-
-Ivars inherited from UIView should be released and nulled in viewDidUnload
-==========================================================================
-
-Whitespace around binary operator should be symmetrical
-=======================================================
-
-Ivar never read or never written
-================================
-
-::
-
-    a * b // OK
-    a*b // OK
-    a* b // BAD
-    a  * b // BAD
-
-===========
 Other stuff
 ===========
 
-Config
-======
-
-Use multicore
-=============
-
-Nicer report pages
-==================
+ * Config support
+ * Use multicore
+ * Nicer report pages
 
