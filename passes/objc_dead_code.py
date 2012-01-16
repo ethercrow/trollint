@@ -178,19 +178,44 @@ class ObjCEmptyMethods(TokenPassBase):
 
     def maybe_diagnostic(self, cur):
 
+        compound = None
         for c in cur.get_children():
             if c.kind == ci.CursorKind.COMPOUND_STMT:
-                if not list(c.get_children()):
+                compound = c
 
-                    d = LintDiagnostic()
-                    d.line_number = cur.location.line
-                    d.message = "method {0} has empty implementation"\
-                            .format(cur.displayname)
-                    d.filename = cur.location.file.name
-                    d.context = cur.displayname
-                    d.category = self.category
+        if not compound:
+            return []
 
-                    return d
-                break
+        children = list(compound.get_children())
+        if not children:
+
+            d = LintDiagnostic()
+            d.line_number = cur.location.line
+            d.message = "method {0} has empty implementation"\
+                    .format(cur.displayname)
+            d.filename = cur.location.file.name
+            d.context = cur.displayname
+            d.category = self.category
+
+            return d
+
+        elif len(children) == 1:
+
+            only_statement = children[0]
+            if only_statement.kind == ci.CursorKind.OBJC_MESSAGE_EXPR and\
+                    only_statement.displayname == cur.displayname:
+
+                # TODO: verify that callee is indeed |super|
+                # TODO: verify that all parameters are passed through unchanged
+
+                d = LintDiagnostic()
+                d.line_number = cur.location.line
+                d.message = "method {0} only calls super implementation"\
+                        .format(cur.displayname)
+                d.filename = cur.location.file.name
+                d.context = cur.displayname
+                d.category = self.category
+
+                return d
 
         return None
