@@ -202,10 +202,10 @@ class ObjCEmptyMethods(TokenPassBase):
         elif len(children) == 1:
 
             only_statement = children[0]
-            if only_statement.kind == ci.CursorKind.OBJC_MESSAGE_EXPR and\
-                    only_statement.displayname == cur.displayname:
+            if only_statement.kind == ci.CursorKind.OBJC_MESSAGE_EXPR\
+                    and only_statement.displayname == cur.displayname\
+                    and '[super ' == full_text_for_cursor(only_statement)[0:7]:
 
-                # TODO: verify that callee is indeed |super|
                 # TODO: verify that all parameters are passed through unchanged
 
                 d = LintDiagnostic()
