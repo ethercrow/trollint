@@ -2,7 +2,6 @@
 New passes
 ==========
 
- * Get diagnostics from clang --analyze
  * Non-empty case without break is suspicios
     ::
 
