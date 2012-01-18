@@ -3,8 +3,7 @@
 
 import sys
 from clang import cindex
-from utils import get_clang_args
-
+from utils import get_clang_args, get_clang_analyzer_diagnostics
 
 if __name__ == '__main__':
 
@@ -26,3 +25,6 @@ if __name__ == '__main__':
                     + ' ' + d.spelling)
         else:
             print('???:' + str(d.location.line) + ' ' + d.spelling)
+
+    for d in get_clang_analyzer_diagnostics(filename, clang_args):
+        print(d.filename + ':' + str(d.line_number) + ' ' + d.message)

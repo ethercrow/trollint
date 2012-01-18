@@ -1,6 +1,9 @@
 
 import os
 from os.path import join
+from subprocess import call
+import plistlib as plist
+from diagnostic import LintDiagnostic
 
 DEFAULT_WARNINGS = ['-Wall', '-Wextra', '-Wshadow',
                     '-Winitializer-overrides',
@@ -148,4 +151,33 @@ def unique(xs):
 
 
 def get_clang_analyzer_diagnostics(filename, clang_args):
-    return []
+    invocation = ['clang', '--analyze']
+    invocation += clang_args
+    invocation += ['-o', '.static_analyzer_output']
+    invocation += ['-Xclang',
+            '-analyzer-checker=core,deadcode,unix,osx,experimental']
+
+    if '-fobjc-arc' in clang_args:
+        invocation += ['-Xclang',
+                '-analyzer-disable-checker=experimental.osx.cocoa.Dealloc']
+
+    invocation.append(filename)
+    call(invocation)
+
+    try:
+        with open('.static_analyzer_output') as fi:
+            root = plist.readPlist(fi)
+    except IOError as e:
+        return []
+
+    result = []
+    for diag_dict in root['diagnostics']:
+        d = LintDiagnostic()
+        d.message = diag_dict['description']
+        d.line_number = diag_dict['location']['line'] 
+        d.filename = root['files'][diag_dict['location']['file']]
+        with open(d.filename) as fi:
+            d.context = fi.readlines()[d.line_number-1].rstrip()
+        d.category = 'ClangSA'
+        result.append(d)
+    return result

@@ -88,20 +88,26 @@ def lint_one_file(filename, pass_classes, clang_args):
 
 def lint_files(filenames, pass_classes, clang_args):
 
-    diags = []
-
-    for filename in progressbar(filenames):
-        diags += lint_one_file(filename, pass_classes, clang_args)
+    def strip_dot_slash(d):
+        if d.filename.startswith('./'):
+            d.filename = d.filename[2:]
+        return d
 
     def interesting_file(d):
         if os.path.isabs(d.filename):
             return False
 
-        if d.filename.startswith('opt') or d.filename.startswith('./opt'):
+        if d.filename.startswith('opt'):
             return False
 
         return True
 
+    diags = []
+
+    for filename in progressbar(filenames):
+        diags += lint_one_file(filename, pass_classes, clang_args)
+
+    diags = map(strip_dot_slash, diags)
     diags = filter(interesting_file, diags)
 
     diags = sorted(diags, key=lambda d: d.line_number)
