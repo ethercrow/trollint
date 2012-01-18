@@ -6,8 +6,8 @@ trollint
 What is this?
 =============
 
-Code analysis tool for automating some mundane parts of code review process.
-It is intended primarily for codebases compilable with clang.
+    Code analysis tool for automating some mundane parts of code review process.
+    It is intended primarily for codebases compilable with clang.
 
 Dependencies
 ============
@@ -15,6 +15,36 @@ Dependencies
     * Python 2.* (2.6 and 2.7 are known to work)
     * jinja2
     * libclang
+
+Installation
+============
+
+Linux
+-----
+
+    You'll figure it out
+
+OS X
+----
+
+    You can install jinja2 by invoking the following in Terminal::
+        
+        easy_install jinja2
+
+    To get libclang files, download
+    http://llvm.org/releases/3.0/clang+llvm-3.0-x86_64-apple-darwin11.tar.gz
+    and extract to somewhere, e.g. $HOME/clang-binary. Then add path to
+    libclang.dylib to LD_LIBRARY_PATH like this::
+
+        export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/clang-binary/clang+llvm-3.0-x86_64-apple-darwin11/lib"
+
+    You probably want to do this for every shell session, so add that line to
+    $HOME/.bashrc ($HOME/.zshrc if you use zsh).
+
+Windows
+-------
+
+    Waiting for a brave soul to try.
 
 How do I use it?
 ================
@@ -24,7 +54,7 @@ How do I use it?
     cd my_shiny_project
 
     # assuming you keep your source files in src directory
-    /path/to/trollint/trollint.py src/**/*.cpp
+    /path/to/trollint/trollint.py src/**/*.m
 
     # again, assuming that your favorite browser is elinks
     elinks report/index.html 
@@ -33,7 +63,8 @@ How do I use it?
 It spits out a stacktrace about libclang.so (or dylib or dll). Wat do?
 ======================================================================
 
-trollint uses libclang.so, ensure that LD_LIBRARY_PATH or whatever it is on your platform contains path to clang library.
+    trollint uses libclang.so, ensure that LD_LIBRARY_PATH or whatever it is on
+    your platform contains path to clang library.
 
 I want moar analyses
 ====================
