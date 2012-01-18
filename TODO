@@ -94,6 +94,8 @@ New passes
          a  * b // BAD
 
 * Ivar never read or never written
+* viewDidLoad and viewDidUnload must call super implementation
+* variable context size instead of always one line
 
 Other stuff
 ===========
@@ -101,4 +103,5 @@ Other stuff
  * Config support
  * Use multicore
  * Nicer report pages
+    sorting, filtering
 
