@@ -174,10 +174,10 @@ def get_clang_analyzer_diagnostics(filename, clang_args):
     for diag_dict in root['diagnostics']:
         d = LintDiagnostic()
         d.message = diag_dict['description']
-        d.line_number = diag_dict['location']['line'] 
+        d.line_number = diag_dict['location']['line']
         d.filename = root['files'][diag_dict['location']['file']]
         with open(d.filename) as fi:
-            d.context = fi.readlines()[d.line_number-1].rstrip()
+            d.context = fi.readlines()[d.line_number - 1].rstrip()
         d.category = 'ClangSA'
         result.append(d)
     return result
