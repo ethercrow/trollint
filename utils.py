@@ -16,7 +16,7 @@ DEFAULT_WARNINGS = ['-Wall', '-Wextra', '-Wshadow',
                     '-Wno-conversion', '-Wno-missing-field-initializers',
                     '-Wno-unused-parameter', '-Wno-sign-compare',
                     '-Wno-sentinel', '-Wunreachable-code',
-                    '-Wno-missing-braces'
+                    '-Wno-missing-braces', '-Wno-arc'
                    ]
 
 
