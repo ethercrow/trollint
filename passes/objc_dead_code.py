@@ -51,18 +51,18 @@ class ObjCDeadIvar(PassBase):
                     if c.kind == ci.CursorKind.OBJC_INSTANCE_METHOD_DECL]
 
             def collect_ivar_usages(cur):
-                result = set()
+                ivar_set = set()
 
                 def go(cur):
                     if cur.kind == ci.CursorKind.MEMBER_REF_EXPR:
-                        result.add(cur.displayname)
+                        ivar_set.add(cur.displayname)
 
                     for child in cur.get_children():
                         go(child)
 
                 go(cur)
 
-                return result
+                return ivar_set
 
             for mi in method_impls:
                 ivar_usages_in_method = collect_ivar_usages(mi)
@@ -184,7 +184,7 @@ class ObjCEmptyMethods(TokenPassBase):
                 compound = c
 
         if not compound:
-            return []
+            return None
 
         children = list(compound.get_children())
         if not children:
