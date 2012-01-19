@@ -81,7 +81,6 @@ New passes
              }
          }
  
- * Discourage using C arrays as ivars in ObjC classes
  * loadView should set self.view or call [super loadView] before reading self.view
  * Ivars inherited from UIView should be released and nulled in viewDidUnload
  * Whitespace around binary operator should be symmetrical
