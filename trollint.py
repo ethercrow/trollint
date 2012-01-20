@@ -11,6 +11,7 @@ from diagnostic import from_clang_diagnostic
 import report
 from itertools import groupby
 from utils import get_clang_args, unique, get_clang_analyzer_diagnostics
+from multiprocessing import Pool
 
 
 def discover_pass_classes():
@@ -85,6 +86,11 @@ def lint_one_file(filename, pass_classes, clang_args):
 
     return diags
 
+def worker(filename):
+    try:
+        return lint_one_file(filename, pass_classes, clang_args)
+    except KeyboardInterrupt:
+        return []
 
 def lint_files(filenames, pass_classes, clang_args):
 
@@ -102,10 +108,15 @@ def lint_files(filenames, pass_classes, clang_args):
 
         return True
 
+    # TODO: accept -jN and/or read process count from config
+    pool = Pool(processes=4)
     diags = []
-
-    for filename in progressbar(filenames):
-        diags += lint_one_file(filename, pass_classes, clang_args)
+    try:
+        for r in progressbar(pool.imap(worker, filenames), length=len(filenames)):
+            diags += r
+    except KeyboardInterrupt:
+        pool.terminate()
+        return []
 
     diags = map(strip_dot_slash, diags)
     diags = filter(interesting_file, diags)

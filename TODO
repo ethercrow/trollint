@@ -99,7 +99,6 @@ Other stuff
 ===========
 
  * Config support
- * Use multicore
  * Nicer report pages
     sorting, filtering
  * Packaging

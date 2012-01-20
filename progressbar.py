@@ -1,8 +1,11 @@
 import sys
 
 
-def progressbar(it, prefix="", size=60):
-    count = len(it)
+def progressbar(it, prefix="", size=60, length=0):
+    if length:
+        count = length
+    else:
+        count = len(it)
 
     if not count:
         return
