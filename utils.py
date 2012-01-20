@@ -1,7 +1,7 @@
 
 import os
 from os.path import join
-from subprocess import call
+import subprocess as sp
 import plistlib as plist
 from diagnostic import LintDiagnostic
 
@@ -162,12 +162,14 @@ def get_clang_analyzer_diagnostics(filename, clang_args):
                 '-analyzer-disable-checker=experimental.osx.cocoa.Dealloc']
 
     invocation.append(filename)
-    call(invocation)
+
+    p = sp.Popen(invocation, stdout=sp.PIPE, stderr=sp.STDOUT)
+    p.communicate()
 
     try:
         with open('.static_analyzer_output') as fi:
             root = plist.readPlist(fi)
-    except IOError as e:
+    except IOError:
         return []
 
     result = []
