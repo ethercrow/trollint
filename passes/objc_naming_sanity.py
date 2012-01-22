@@ -15,7 +15,7 @@ RULES = [(r'^date_?$', 'NSDate'),
          (r'^dict_?$', 'NSDictionary'),
          (r'[a-z]Dict_?$', 'NSDictionary'),
          (r'^is[A-Z]', 'BOOL'),
-         (r'^as[A-Z]', 'BOOL'),
+         (r'^has[A-Z]', 'BOOL'),
          (r'^should[A-Z]', 'BOOL'),
          ]
 
