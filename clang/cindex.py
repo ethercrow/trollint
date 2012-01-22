@@ -848,6 +848,9 @@ class Cursor(Structure):
         # declaration prior to issuing the lookup.
         return Cursor_def(self)
 
+    def get_referenced(self):
+        return Cursor_ref(self)
+
     def get_usr(self):
         """Return the Unified Symbol Resultion (USR) for the entity referenced
         by the given cursor (or None).

@@ -1,5 +1,5 @@
 
-import clang.cindex as cindex
+import clang.cindex as ci
 from base.token_pass_base import TokenPassBase
 from diagnostic import LintDiagnostic
 from utils import full_text_for_cursor
@@ -12,7 +12,7 @@ class ObjCIvarNaming(TokenPassBase):
 
         super(ObjCIvarNaming, self).__init__()
 
-        self.cursor_kind = cindex.CursorKind.OBJC_IVAR_DECL
+        self.cursor_kind = ci.CursorKind.OBJC_IVAR_DECL
         self.category = 'Naming'
 
         self.re_ivar_name = re.compile(r'^[a-zA-Z0-9]+_$')
@@ -20,7 +20,7 @@ class ObjCIvarNaming(TokenPassBase):
     def maybe_diagnostic(self, cur):
         ivar_name = cur.displayname
 
-        if cur.parent.kind == cindex.CursorKind.OBJC_INTERFACE_DECL and\
+        if cur.parent.kind == ci.CursorKind.OBJC_INTERFACE_DECL and\
                 not self.re_ivar_name.match(ivar_name):
 
             d = LintDiagnostic()
@@ -42,7 +42,7 @@ class ObjCSynthesizedNaming(TokenPassBase):
 
         super(ObjCSynthesizedNaming, self).__init__()
 
-        self.cursor_kind = cindex.CursorKind.OBJC_SYNTHESIZE_DECL
+        self.cursor_kind = ci.CursorKind.OBJC_SYNTHESIZE_DECL
         self.category = 'Naming'
         self.re_short_form = re.compile(r'^[a-zA-Z0-9]+$')
         self.re_long_form = re.compile(r'^([a-zA-Z0-9]+) = \1_$')
