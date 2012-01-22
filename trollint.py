@@ -130,12 +130,16 @@ if __name__ == '__main__':
 
     filenames = sys.argv[1:]
 
+    print('Discovering lint passes')
     pass_classes = discover_pass_classes()
 
+    print('Guessing compiler flags')
     clang_args = get_clang_args()
 
+    print('Linting files')
     diags = lint_files(filenames, pass_classes, clang_args)
 
+    print('Sorting diagnostics')
     category_names = list(set([d.category for d in diags]))
 
     def group_diagnostics(ds):
@@ -160,6 +164,7 @@ if __name__ == '__main__':
 
     files_with_categorized_diags = group_diagnostics(diags)
 
+    print('Generating report')
     report.render_to_directory('report', 'OHai',
             files_with_categorized_diags, category_names)
 

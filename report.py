@@ -2,6 +2,7 @@
 import jinja2 as j2
 import os
 import sys
+from progressbar import progressbar
 
 
 def load_template(filename):
@@ -30,7 +31,7 @@ def render_to_directory(dirname, title, files, category_names):
                                diagnostic_categories=category_names,
                                title=title).encode('utf8'))
 
-    for f in files:
+    for f in progressbar(files):
         for dname, ds in f['diagnostic_groups'].iteritems():
             path = os.path.join(dirname, f['name'].replace('/', '_'))
             path += '_' + dname + '.html'
