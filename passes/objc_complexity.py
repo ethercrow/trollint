@@ -4,6 +4,7 @@ from diagnostic import LintDiagnostic
 from passes.base.token_pass_base import TokenPassBase
 from utils import full_text_for_cursor
 
+
 class ObjCMethodComplexity(TokenPassBase):
 
     def __init__(self):
@@ -20,7 +21,7 @@ class ObjCMethodComplexity(TokenPassBase):
         # depth  1 -- actual method code
         def calculate_complexity(c, depth=-1):
             result = 0
-            if c.kind == ci.CursorKind.COMPOUND_STMT and depth>0:
+            if c.kind == ci.CursorKind.COMPOUND_STMT and depth > 0:
                 result = 1 if (depth < 3) else 2
 
             result += sum(calculate_complexity(child, depth + 1)

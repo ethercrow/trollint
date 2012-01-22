@@ -86,11 +86,14 @@ def lint_one_file(filename, pass_classes, clang_args):
 
     return diags
 
-def worker(filename):
+
+def worker(task):
+    filename, pass_classes, clang_args = task
     try:
         return lint_one_file(filename, pass_classes, clang_args)
     except KeyboardInterrupt:
         return []
+
 
 def lint_files(filenames, pass_classes, clang_args):
 
@@ -108,11 +111,16 @@ def lint_files(filenames, pass_classes, clang_args):
 
         return True
 
+    def mk_task(filename):
+        return (filename, pass_classes, clang_args)
+
     # TODO: accept -jN and/or read process count from config
     pool = Pool(processes=4)
     diags = []
+    tasks = (mk_task(f) for f in filenames)
     try:
-        for r in progressbar(pool.imap(worker, filenames), length=len(filenames)):
+        for r in progressbar(pool.imap(worker, tasks),
+                             length=len(filenames)):
             diags += r
     except KeyboardInterrupt:
         pool.terminate()

@@ -29,6 +29,8 @@ class ObjCNamingSanityBase(TokenPassBase):
         self.category = 'Naming'
         self.rules = [(re.compile(regex), typename)
                         for regex, typename in RULES]
+        self.message_template = "variable {0} is declared as instance " +\
+                                "of {1}, but the name implies {2}"
 
     def maybe_diagnostic(self, cur):
 
@@ -54,7 +56,7 @@ class ObjCNamingSanityBase(TokenPassBase):
             while class_cursor:
                 class_name = class_cursor.displayname
                 if class_name == expected_class_name:
-                   return None
+                    return None
                 class_cursor = get_objc_superclass(class_cursor)
             else:
 
