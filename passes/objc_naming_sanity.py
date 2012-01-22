@@ -29,8 +29,8 @@ class ObjCNamingSanityBase(TokenPassBase):
         self.category = 'Naming'
         self.rules = [(re.compile(regex), typename)
                         for regex, typename in RULES]
-        self.message_template = "variable {0} is declared as instance " +\
-                                "of {1}, but the name implies {2}"
+        self.message_template = ("variable {0} is declared as instance "
+                                 "of {1}, but the name implies {2}")
 
     def maybe_diagnostic(self, cur):
 
@@ -80,13 +80,13 @@ class ObjCVariableNamingSanity(ObjCNamingSanityBase):
     def __init__(self):
         super(ObjCVariableNamingSanity, self).__init__()
         self.cursor_kind = ci.CursorKind.VAR_DECL
-        self.message_template = "variable {0} is declared as instance " +\
-                                "of {1}, but the name implies {2}"
+        self.message_template = ("variable {0} is declared as instance "
+                                 "of {1}, but the name implies {2}")
 
 
 class ObjCIvarNamingSanity(ObjCNamingSanityBase):
     def __init__(self):
         super(ObjCIvarNamingSanity, self).__init__()
         self.cursor_kind = ci.CursorKind.OBJC_IVAR_DECL
-        self.message_template = "ivar {0} is declared as instance " +\
-                                "of {1}, but the name implies {2}"
+        self.message_template = ("ivar {0} is declared as instance "
+                                 "of {1}, but the name implies {2}")
