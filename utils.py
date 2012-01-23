@@ -183,3 +183,16 @@ def get_clang_analyzer_diagnostics(filename, clang_args):
         d.category = 'ClangSA'
         result.append(d)
     return result
+
+
+def get_children_recursively(cursor):
+    result = []
+
+    def go(c):
+        result.append(c)
+        for child in c.get_children():
+            go(child)
+
+    go(cursor)
+
+    return result
