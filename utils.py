@@ -151,9 +151,12 @@ def unique(xs):
 
 
 def get_clang_analyzer_diagnostics(filename, clang_args):
+
+    plist_filename = '.sa' + os.path.basename(filename)
+
     invocation = ['clang', '--analyze']
     invocation += clang_args
-    invocation += ['-o', '.static_analyzer_output']
+    invocation += ['-o', plist_filename]
     invocation += ['-Xclang',
             '-analyzer-checker=core,deadcode,unix,osx,experimental']
 
@@ -167,10 +170,12 @@ def get_clang_analyzer_diagnostics(filename, clang_args):
     p.communicate()
 
     try:
-        with open('.static_analyzer_output') as fi:
+        with open(plist_filename) as fi:
             root = plist.readPlist(fi)
     except IOError:
         return []
+
+    os.remove(plist_filename)
 
     result = []
     for diag_dict in root['diagnostics']:
