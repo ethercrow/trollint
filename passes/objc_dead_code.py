@@ -8,7 +8,7 @@ from utils import full_text_for_cursor
 
 class ObjCDeadIvar(PassBase):
 
-    needs = ['cursors', 'filename']
+    needs = ['cursors', 'filename', 'has_arc']
 
     def __init__(self):
 
@@ -79,7 +79,7 @@ class ObjCDeadIvar(PassBase):
                     d.context = full_text_for_cursor(ivar)
                     d.message = 'unused ivar ' + ivar.displayname
                     result.append(d)
-                elif ivar_usages[ivar.displayname] == 1:
+                elif ivar_usages[ivar.displayname] == 1 and self.has_arc:
                     d = LintDiagnostic()
                     d.category = self.category
                     d.filename = self.filename

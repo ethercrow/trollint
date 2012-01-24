@@ -99,6 +99,9 @@ def lint_one_file(filename, pass_classes, clang_args):
         if 'filename' in pass_class.needs:
             p.filename = filename
 
+        if 'has_arc' in pass_class.needs:
+            p.has_arc = '-fobjc-arc' in clang_args
+
         diags += p.get_diagnostics()
 
     return diags
