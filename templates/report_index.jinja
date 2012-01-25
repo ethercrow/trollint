@@ -4,6 +4,18 @@
 <head>
     <title>{{ title }}</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <style type="text/css">
+        body { font-family: helvetica; }
+        table tr { height: 30px; }
+        table tr td { width: 90px; vertical-align: middle;}
+        table tr td:not(:first-child) { text-align: center; }
+        table tr td a { display: block; text-decoration: none; font-size: 18px; color: #000000; width: 100%; }
+        table tr td:hover{ cursor:pointer;}
+        table tr td.ok { background-color: #CCFFCC; }
+        table tr td:hover.ok { background-color: #67ff67; }
+        table tr td.error { background-color: #FFCCCC; }
+        table tr td:hover.error { background-color: #ff6767; }
+    </style>
 </head>
 
 <body>
@@ -18,7 +30,7 @@
         <tr>
             <td>{{ f.name }}</td>
             {% for dcat in diagnostic_categories %}
-            <td style="background-color: {% if f.diagnostic_groups[dcat] %} #FFCCCC {% else %} #CCFFCC {% endif %} ">
+            <td class="{% if f.diagnostic_groups[dcat] %} error {% else %} ok {% endif %}">
                 <a href="{{ (f.name + '_' + dcat)| replace('/', '_')}}.html">
                 {{ f.diagnostic_groups[dcat] | count }}
                 </a>
