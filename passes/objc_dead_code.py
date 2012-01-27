@@ -80,6 +80,11 @@ class ObjCDeadIvar(PassBase):
                     d.message = 'unused ivar ' + ivar.displayname
                     result.append(d)
                 elif ivar_usages[ivar.displayname] == 1 and self.has_arc:
+
+                    # FIXME: false positive if ivar is used as a storage
+                    # to fix this, we need to check if read access is possible
+                    # before write access in this method
+
                     d = LintDiagnostic()
                     d.category = self.category
                     d.filename = self.filename
