@@ -53,6 +53,10 @@ def lint_one_file(filename, pass_classes, clang_args):
 
     tu = index.parse(filename, clang_args, options=parse_opts)
 
+    if not tu:
+        print('parsing {0} failed'.format(filename))
+        return []
+
     local_cursors = [c for c in tu.cursor.get_children()\
             if c.location.file and not os.path.isabs(c.location.file.name)
                and not c.location.file.name.startswith('opt')
