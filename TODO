@@ -48,39 +48,7 @@ New passes
  * Newlines and braces
  * Prevent overriding parent's private methods
  * Bool variable used in bitwise &, | or ^
- * Prefer early returns to reduce complexity
-     Detect this ::
- 
-         void f()
-         { 
-             if (foo) {
-                 lots;
-                 and;
-                 lots;
-                 of;
-                 {
-                     code;
-                 }
-             }
-         }
- 
-     and suggest this::
- 
-         void f()
-         { 
-             if (!foo) {
-                 return;
-             }
- 
-             lots;
-             and;
-             lots;
-             of;
-             {
-                 code;
-             }
-         }
- 
+ * Find somewhat useful complexity metric
  * loadView should set self.view or call [super loadView] before reading self.view
  * Ivars inherited from UIView should be released and nulled in viewDidUnload
  * Whitespace around binary operator should be symmetrical
@@ -92,6 +60,7 @@ New passes
          a  * b // BAD
 
 * Ivar never read or never written
+* Find orphan instance methods (not part of public interface and not called by anyone in implementation part)
 * viewDidLoad and viewDidUnload must call super implementation
 * variable context size instead of always one line
 
