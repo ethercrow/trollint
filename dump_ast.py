@@ -9,10 +9,13 @@ from utils import full_text_for_cursor, get_clang_args
 def print_cursor_recursive(cur, depth=0):
 
     token_text = full_text_for_cursor(cur)
-    token_text = cur.displayname
+    # token_text = cur.displayname
+    # token_text = cur.spelling
 
-    print('{0} {1} | {2}'.format('->' * depth, cur.kind, token_text,
-        cur.location.file.name if cur.location.file else '???'))
+    if '--all' not in sys.argv\
+            and cur.location.file\
+            and cur.location.file.name == sys.argv[1]:
+        print('{0} {1} | {2}'.format('->' * depth, cur.kind, token_text))
 
     for child in cur.get_children():
         print_cursor_recursive(child, depth + 1)
@@ -20,7 +23,7 @@ def print_cursor_recursive(cur, depth=0):
 
 if __name__ == '__main__':
 
-    filename = sys.argv[1]
+    filename = sys.argv[-1]
 
     index = cindex.Index.create()
     tu = index.parse(filename, get_clang_args())
