@@ -7,7 +7,7 @@ from diagnostic import LintDiagnostic
 
 DEFAULT_WARNINGS = ['-Wall', '-Wextra', '-Wshadow',
                     '-Winitializer-overrides',
-                    '-Wsemicolon-before-method-body ',
+                    '-Wsemicolon-before-method-body',
                     '-Widiomatic-parentheses', '-Wdeprecated', '-Wdiv-by-zero',
                     '-Wcomments', '-Wempty-body', '-Wextra-tokens',
                     '-Wmissing-declarations', '-Wnull-dereference',
