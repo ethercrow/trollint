@@ -62,6 +62,7 @@ def get_sdk_dir():
         '/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs',
         join(os.environ['HOME'],
             'Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs'),
+        '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs',
     ]
 
     for cand in candidates:
